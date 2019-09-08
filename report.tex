@@ -1,0 +1,234 @@
+% Created 2019-09-08 Вс 23:39
+% Intended LaTeX compiler: pdflatex
+\documentclass[11pt]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{graphicx}
+\usepackage{grffile}
+\usepackage{longtable}
+\usepackage{wrapfig}
+\usepackage{rotating}
+\usepackage[normalem]{ulem}
+\usepackage{amsmath}
+\usepackage{textcomp}
+\usepackage{amssymb}
+\usepackage{capt-of}
+\usepackage{hyperref}
+\usepackage[T2A]{fontenc}
+\usepackage[a4paper,left=3cm,top=2cm,right=1.5cm,bottom=2cm,marginparsep=7pt,marginparwidth=.6in]{geometry}
+\usepackage{cmap}
+\usepackage[russian, english]{babel}
+\usepackage{xcolor}
+\usepackage{listings}
+\author{Крутько Никита}
+\date{\today}
+\title{}
+\hypersetup{
+ pdfauthor={Крутько Никита},
+ pdftitle={},
+ pdfkeywords={},
+ pdfsubject={},
+ pdfcreator={Emacs 26.1 (Org mode 9.1.9)}, 
+ pdflang={English}}
+\begin{document}
+
+\large
+\thispagestyle{empty}
+\begin{center}
+\textbf{Санкт-Петербургский Национальный Исследовательский}\\
+\textbf{Университет Информационных Технологий, Механики и Оптики}\\
+\textbf{Факультет Программной Инженерии и Компьютерной Техники}\\
+\end{center}
+\vspace{1em}
+\begin{center}
+\includegraphics[width=120px]{/home/krutna/.emacs.d/org-mode/itmo/itmo-logo.png}
+\end{center}
+\LARGE
+\vspace{5em}
+\begin{center}
+\textbf{Вариант №}\\
+\textbf{Лабораторная работа № 1}\\
+\Large
+\textbf{по дисциплине}\\
+\LARGE
+\textbf{\emph{'Программирование'}}\\
+\end{center}
+\vspace{11em}
+\large
+\begin{flushright}
+\textbf{Выполнил:}\\
+\textbf{Студент группы P3113}\\
+\textbf{\emph{Крутько Никита} : 242570}\\
+\textbf{Преподаватель:}\\
+\textbf{\emph{Письмак Алексей Евгеньевич}}\\
+\end{flushright}
+\vspace{4em}
+\large
+\begin{center}
+\textbf{Санкт-Петербург 2019 г.}
+\end{center}
+\pagebreak{}
+\setcounter{tocdepth}{2}
+\tableofcontents
+\vspace{2em}
+\section{Задание:}
+\label{sec:org7429683}
+Написать программу на языке \textbf{Java}, выполняющую соответствующие варианту действия. Программа должна соответствовать следующим требованиям:
+\begin{enumerate}
+\item Она должна быть упакована в исполняемый jar-архив.
+\item Выражение должно вычисляться в соответствии с правилами вычисления матема\-тических выражений (должен соблюдаться порядок выполнения действий и т.д.).
+\item Программа должна использовать математические функции из стандартной биб\-лиотеки Java.
+\item Результат вычисления выражения должен быть выведен в стандартный поток вывода в заданном формате.
+\end{enumerate}
+Выполнение программы необходимо продемонстрировать на сервере \textbf{helios}.
+
+\vspace{2em}
+\section{Исходный код:}
+\label{sec:orgcf525e7}
+\subsection{Main.java:}
+\label{sec:org6500b0c}
+\small
+\lstset{language=Java,label= ,caption= ,captionpos=b,numbers=none}
+\begin{lstlisting}
+import java.lang.Math;
+import java.util.stream.IntStream;
+
+public class Main {
+
+    public static void main(String[] args) {    
+	// Setup constants for first array
+	final int firstArraySize = 18;
+	final int firstArrayMaxValue = 19;
+	// Setup constants for second array
+	final int secondArraySize = 11;
+	final float secondArrayMin = -15.0F;
+	final float secondArrayMax = 9.0F;
+	// Setup constants for third array
+	final int firstFunctionExpectedValue = 15;
+	final int[] secondFunctionExpectedArray = {
+	    2, 7, 8, 10, 11,
+	    12, 14, 16, 19
+	};
+
+	// Arrays initialization
+	int[] first = new int[firstArraySize];
+	float[] second = new float[secondArraySize];
+	double[][] third = new double[firstArraySize][secondArraySize];
+
+	// Setup values of first array
+	for (int i = 0; i < firstArraySize; ++i) {
+	    first[i] = firstArrayMaxValue - i;
+	}
+	// Setup values of second array
+	for (int i = 0; i < secondArraySize; ++i) {
+	    second[i] = (float)
+		(Math.random() *
+		 (secondArrayMax + secondArrayMin) -
+		 secondArrayMin);
+
+	}
+	// Setup values of third array
+	for (int i = 0; i < firstArraySize; ++i) {
+	    for (int j = 0; j < secondArraySize; ++j) {
+		final int value = first[i];
+		final float result = second[j];
+		if (value == firstFunctionExpectedValue) {
+
+		    third[i][j] = firstFunction(result);
+
+		} else if (IntStream.of(secondFunctionExpectedArray)
+			   .anyMatch(val -> val == value)) {
+
+		    third[i][j] = secondFunction(result);
+
+		} else {
+
+		    third[i][j] = thirdFunction(result);
+
+		}
+	    }
+	}
+	// Print third function to the screen
+	// printToScreen(third, firstArraySize, secondArraySize);
+	printFullToScreen(third,
+			  first, firstArraySize,
+			  second, secondArraySize);
+    }
+
+    static double firstFunction(final double value) {
+	return Math.tan(Math.cos(powAnyValue(value,
+					     (2.0/3.0) * value)));
+    }
+
+    static double secondFunction(final double value) {
+	double dimension = 0.75 / (0.25 - Math.asin((value - 3.0) / 24.0));
+	return powAnyValue((2.0 + powAnyValue(Math.tan(value),
+					    Math.cos(value))) / 2.0,
+			   dimension);
+    }
+
+    static double thirdFunction(final double value) {
+	return (1.0/3.0) /
+	    (powAnyValue((4.0 /
+			  Math.tan((powAnyValue(value,
+						(value + 1.0) / value)))),
+			 3.0) - 4.0);
+    }
+
+    static double powAnyValue(double value, final double dimension) {
+	boolean isNegative = value < 0;
+	if (isNegative) {
+	    value *= -1.0;
+	}
+	double result = Math.pow(value, dimension);
+	if (isNegative) {
+	    result *= -1.0;
+	}
+	return result;
+    }
+
+    private static void
+	printToScreen(final double[][] arr,
+		      final int columns,
+		      final int lines) {
+	for (int i = 0; i < columns; ++i) {
+	    for (int j = 0; j < lines; ++j) {
+		System.out.printf("%13.4e", arr[i][j]);
+	    }
+	    System.out.println();
+	}
+    }
+    private static void
+	printFullToScreen(final double[][] arr,
+			  final int[] first,
+			  final int lines,
+			  final float[] second,
+			  final int columns) {
+	System.out.printf("    \u2503");
+	for (int i = 0; i < columns; ++i) {
+	    System.out.printf("%13.4e", second[i]);
+	}
+	System.	out.println();
+	for (int i = 0; i < columns * 13 + 5; ++i) {
+	    if (i == 4)
+		System.out.printf("\u254B");
+	    else
+		System.out.printf("\u2501");
+	}
+	System.out.println();
+	for (int i = 0; i < lines; ++i) {
+	    System.out.printf("%3d \u2503", first[i]);
+	    for (int j = 0; j < columns; ++j) {
+		System.out.printf("%13.4e", arr[i][j]);
+	    }
+	    System.out.println();
+	}
+    }
+
+}
+\end{lstlisting}
+\pagebreak{} \large
+\section{Вывод:}
+\label{sec:org86b5a10}
+Я познакомился с языком \textbf{Java}, изучил некоторые библиотеки (\textbf{Math}) и методы классов и областей имён, 
+\end{document}
