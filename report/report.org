@@ -52,9 +52,9 @@ file:./itmo-logo.png
 **** Исходный код:
 ***** Main.java: 
 #+LATEX: \small
-#+ATTR_LATEX: :floan nil
-#+INCLUDE: "./Main.java" src Java
+#+ATTR_LATEX: :float nil
+#+INCLUDE: "../Main.java" src Java
 #+LATEX: \pagebreak{} \large
-#+INCLUDE: "./output" export
+#+INCLUDE: "../output" export
 **** Вывод:
 Я познакомился с языком *Java*, изучил некоторые библиотеки (*Math*) и методы классов и областей имён, 
